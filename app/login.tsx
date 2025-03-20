@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import imagePaths from '~/assets/constants/imagePaths';
-import Swal from 'sweetalert2';
 import * as Location from 'expo-location';
-import { PermissionResponse } from 'expo-location';
+// import { PermissionResponse } from 'expo-location';
 import { KeyboardAvoidingView, Keyboard, Platform, SafeAreaView, StatusBar, TouchableWithoutFeedback, View, Text, TextInput, TouchableOpacity, ActivityIndicator, StyleSheet, Image, PermissionsAndroid, ToastAndroid, Alert, Linking } from 'react-native';
 import axios from 'axios';
 import { router } from 'expo-router';

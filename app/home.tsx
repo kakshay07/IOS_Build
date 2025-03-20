@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   SafeAreaView,
   View,
@@ -14,33 +14,16 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
 const Home = () => {
-  const [activeCategory, setActiveCategory] = useState('Popular');
   const [dataArr, setdataArr] = useState<any>({});
 
   const [isPopupVisible, setPopupVisible] = useState(false);
-  const categories = ['All', 'Popular', 'Recommended', 'Nearby', 'New'];
-
-
-  
-  const featuredItems = [
-    { id: '1', title: 'YAMAHA R', description: 'Best value for money', price: '$49.99', image: 'https://tse4.mm.bing.net/th?id=OIP.S1MG-qLgZS_9td6ZvPwb8wHaEo&pid=Api&P=0&h=180' },
-    { id: '2', title: 'BMW M1000', description: 'Most popular choice', price: '$29.99', image: 'https://tse1.mm.bing.net/th?id=OIP.6Co720BX5z5vgPmL2WNfJwHaEK&pid=Api&P=0&h=180' },
-    { id: '3', title: 'KTM 390', description: 'Budget friendly option', price: '$19.99', image: 'https://tse4.mm.bing.net/th?id=OIP.5JHIOBqQk3_m4m8rIgvN5AHaEO&pid=Api&P=0&h=150' },
-  ];
-  
-  const popularItems = [
-    { id: '1', title: 'Daveil', rating: '4.8', reviews: '127', image: 'https://wallpaperaccess.com/full/226908.jpg' },
-    { id: '2', title: 'TVS 310RR', rating: '4.6', reviews: '89', image: 'https://tse3.mm.bing.net/th?id=OIP.ANNjdRsnAba-BOc9VEaUPwHaE8&pid=Api&P=0&h=180' },
-    { id: '3', title: 'HAYABUSA', rating: '4.9', reviews: '215', image: 'https://tse1.mm.bing.net/th?id=OIP.DU2F_VVMKN_506txQROD1wHaF_&pid=Api&P=0&h=180' },
-    { id: '4', title: 'SPEED 400', rating: '4.7', reviews: '156', image: 'https://tse2.mm.bing.net/th?id=OIP.lPGXan_cpLr_1ocj2N2kagHaE8&pid=Api&P=0&h=180' },
-  ];
 
   const renderFeaturedItem = ({ item }) => (
     <TouchableOpacity style={styles.featuredCard}>
@@ -101,9 +84,20 @@ const Home = () => {
     AsyncStorage.removeItem('user');
     setdataArr({})
     router.replace("/login");
-    Alert.alert("User looged out")
+    Alert.alert("User logged out")
   }
+  const employeeActivities = [
+    { id: 1, activity: 'System Login', time: '10:20', date: '2025-03-19', status: 'Success' },
+    { id: 2, activity: 'File Access', time: '10:35', date: '2025-03-19', status: 'Success' },
+    { id: 3, activity: 'Database Query', time: '11:15', date: '2025-03-19', status: 'Success' },
+    { id: 4, activity: 'Report Generation', time: '12:30', date: '2025-03-19', status: 'In Progress' },
+    { id: 5, activity: 'System Logout', time: '14:10', date: '2025-03-19', status: 'Pending' },
+  ];
+
   
+
+  
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
@@ -111,7 +105,7 @@ const Home = () => {
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.greeting}>Good morning,</Text>
+          <Text style={styles.greeting}>Welcome,</Text>
           <Text style={styles.userName}>{dataArr?.USER_NAME}</Text>
         </View>
         <View style={styles.headerRight}>
@@ -134,7 +128,7 @@ const Home = () => {
         )}
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} onTouchStart={() => setPopupVisible(false)} >
         {/* Search Bar */}
         {/* <TouchableOpacity style={styles.searchBar}>
           <Ionicons name="search" size={20} color="#777" />
@@ -224,10 +218,70 @@ const Home = () => {
             ))}
           </View>
         </View> */}
+<View style={styles.detailsContainer}>
+        <View style={styles.detailItem}>
+          <FontAwesome name="id-card" size={18} color="#555" />
+          <Text style={styles.detailLabel}>Employee ID</Text>
+          <Text style={styles.detailValue}>1001</Text>
+        </View>
+        
+        <View style={styles.detailItem}>
+          <FontAwesome name="building" size={18} color="#555" />
+          <Text style={styles.detailLabel}>Department</Text>
+          <Text style={styles.detailValue}>IT</Text>
+        </View>
+        
+        <View style={styles.detailItem}>
+          <FontAwesome name="clock-o" size={18} color="#555" />
+          <Text style={styles.detailLabel}>Logged in at</Text>
+          <Text style={styles.detailValue}>
+            {('10 :20')} • {'2025-03-19'}
+          </Text>
+        </View>
+        
+        <View style={styles.detailItem}>
+          <FontAwesome name="calendar-check-o" size={18} color="#555" />
+          <Text style={styles.detailLabel}>Session duration</Text>
+          <Text style={styles.detailValue}>{100}</Text>
+        </View>
+      </View>
+    {/* </View> */}
+ 
+    <View style={styles.container1}>
+      {/* Table Header */}
+      <View style={styles.row}>
+        <Text style={styles.headerCell}>Activity</Text>
+        <Text style={styles.headerCell}>Time</Text>
+        <Text style={styles.headerCell}>Date</Text>
+        <Text style={styles.headerCell}>Status</Text>
+      </View>
 
-        {/* Bottom Padding */}
-        <View style={{ height: 20 }} />
+      {/* Table Data */}
+      <FlatList
+        data={employeeActivities}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.row}>
+            <Text style={styles.cell}>{item.activity}</Text>
+            <Text style={styles.cell}>{item.time}</Text>
+            <Text style={styles.cell}>{item.date}</Text>
+            <Text
+              style={[
+                styles.cell,
+                { color: item.status == 'Success' ? '#28a745' : item.status == 'In Progress' ? '#ffc107' : '#dc3545' }
+              ]}
+            >
+              {item.status}
+            </Text>
+          </View>
+        )}
+      />
+    </View>
+     
+
+        {/* <View style={{ height: 20 }} /> */}
       </ScrollView>
+      
 
       {/* Navigation Bar */}
       {/* <View style={styles.navigationBar}>
@@ -254,6 +308,7 @@ const Home = () => {
           </TouchableOpacity>
         ))}
       </View> */}
+
     </SafeAreaView>
   );
 };
@@ -537,6 +592,84 @@ const styles = StyleSheet.create({
   logoutText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+
+  userInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#e1e1e1',
+  },
+  nameContainer: {
+    marginLeft: 12,
+  },
+  welcomeText: {
+    fontSize: 14,
+    color: '#666',
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  badge: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+  },
+  badgeText: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  detailsContainer: {
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    padding: 12,
+  },
+  detailItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
+  },
+  detailLabel: {
+    fontSize: 14,
+    color: '#555',
+    marginLeft: 10,
+    width: 110,
+  },
+  detailValue: {
+    fontSize: 14,
+    color: '#333',
+    fontWeight: '500',
+    flex: 1,
+  },
+
+  row: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    paddingVertical: 10,
+  },
+  headerCell: {
+    flex: 1,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  cell: {
+    flex: 1,
+    textAlign: 'center',
+  },
+  container1: {
+    flex: 1,
+    backgroundColor: '#f5f5f7',
   },
 });
 
